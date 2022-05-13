@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             type: DataTypes.INTEGER,
             references: {
-                model: 'items',
+                model: 'item',
                 key: 'item_id' 
             }
         },

@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
-    const items = sequelize.define("items", {    
+    const item = sequelize.define("item", {    
         item_id: {
             allowNull: false,
             autoIncrement: true,
@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           }
     },
-    { tableName: 'items'});
+    { tableName: 'item'});
 
-    return items;
+    return item;
 };
