@@ -2,8 +2,8 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql').graphqlHTTP;
 const graphql = require('graphql')
-const cors = require("cors");
 const db = require("./models");
+const joinMonster = require('join-monster').default;
 
 
 //Creating a fresh DB 
@@ -16,6 +16,28 @@ db.sequelize.sync({ force: true }).then(() => {
 //variables 
 const PORT = process.env.PORT || 8080;
 
+const location = new graphql.GraphQLObjectType({
+  name: 'location',
+  extensions: {
+    joinMonster: {
+      sqlTable: "location", // the SQL table is on the schema "public" called "Accounts"
+      uniqueKey: 'location_id'
+    }
+  },
+  fields: () => ({
+    location_id: { type: graphql.GraphQLInt },
+    location: { type: graphql.GraphQLString },
+    //latitude: { type: graphql.GraphQLString },
+    //longitude: { type: graphql.GraphQLString },
+   // Coordinates: {
+   //   type: Team,
+   //   sqlJoin: (playerTable, teamTable, args) => `${playerTable}.team_id = ${teamTable}.id`
+   // }
+  })
+});   
+
+
+
 //GraphQL Variables 
 const QueryRoot = new graphql.GraphQLObjectType({
     name: 'Query',
@@ -23,6 +45,20 @@ const QueryRoot = new graphql.GraphQLObjectType({
       hello: {
         type: graphql.GraphQLString,
         resolve: () => "Hello world!"
+      },
+      location: {
+        type: new graphql.GraphQLList(location),
+
+
+        resolve: (table, args, context, resolveInfo) => {
+          return joinMonster(resolveInfo, {}, sql => {
+            return db.sequelize.query(sql).then(function(result) {
+              return result[0];
+            });
+          }, {dialect: 'mysql'});
+        }
+
+
       }
     })
   })
@@ -38,22 +74,5 @@ app.use('/api', graphqlHTTP({
   schema: schema,
   graphiql: true,
 }));
-
-
-
-
-
-
-
-
-
-var corsOptions = {
-    origin: `http://localhost:${PORT}`
-};
-app.use(cors(corsOptions));
-// parse requests of content-type - application/json
-app.use(express.json());
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
 
 app.listen(PORT);

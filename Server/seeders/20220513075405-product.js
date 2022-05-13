@@ -4,8 +4,9 @@ const falso = require('@ngneat/falso');
 
 
 
-const randomItems = [...Array(1000)].map((items) => (
+const randomItems = [...Array(1000)].map((products) => (
     {
+      sku: falso.randNumber({ min: 1, max: 100}),
       name: falso.randProduct().title,
       description: falso.randProduct().description,
       price: falso.randProduct().price,
@@ -17,10 +18,10 @@ const randomItems = [...Array(1000)].map((items) => (
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('item', randomItems, {});
+    return queryInterface.bulkInsert('product', randomItems, { ignoreDuplicates: true } );
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('item', null, {});
+    return queryInterface.bulkDelete('product', null, {});
   }
 };

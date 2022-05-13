@@ -1,12 +1,11 @@
 'use strict';
 const falso = require('@ngneat/falso');
 
-const randomInventories = [...Array(500)].map((vendors) => (
+const randomInventories = [...Array(1000)].map((inventories) => (
   {
     location_id: falso.randNumber({ min: 1, max: 5}) ,
-    item_id: falso.randNumber({ min: 0, max: 99}),
+    sku: falso.randNumber({ min: 1, max: 100}),
     stock: falso.randNumber({ min: 0, max: 500}),
-    unitsSold: falso.randNumber({ min: 5, max: 5000 }) 
   }
 ))
 

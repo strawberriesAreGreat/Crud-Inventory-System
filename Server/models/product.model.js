@@ -1,10 +1,9 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
-    const item = sequelize.define("item", {    
-        item_id: {
+    const product = sequelize.define("product", {    
+          sku: {
             allowNull: false,
-            autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
           },
@@ -27,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           }
     },
-    { tableName: 'item'});
+    { tableName: 'product'});
 
-    return item;
+    return product;
 };
