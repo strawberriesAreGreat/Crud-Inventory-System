@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      location: {
+      storeName: {
         type: Sequelize.STRING
       },
       phone: {

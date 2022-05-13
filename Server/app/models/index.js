@@ -20,10 +20,10 @@ const db = {};
 
 db.sequelize = sequelize;
 
-db.address = require("./address.model.js")(sequelize, Sequelize);
-db.location = require("./location.model.js")(sequelize, Sequelize);
+db.vendors = require("./address.model.js")(sequelize, Sequelize);
+db.vendors = require("./location.model.js")(sequelize, Sequelize);
 db.items = require("./item.model.js")(sequelize, Sequelize);
-db.inventory = require("./inventory.model.js")(sequelize, Sequelize);
+db.inventories = require("./inventory.model.js")(sequelize, Sequelize);
 
 
 //many images to one user
