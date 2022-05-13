@@ -17,10 +17,10 @@ const randomItems = [...Array(1000)].map((items) => (
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('items', randomItems, {});
+    return queryInterface.bulkInsert('item', randomItems, {});
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('items', null, {});
+    return queryInterface.bulkDelete('item', null, {});
   }
 };

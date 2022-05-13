@@ -1,5 +1,12 @@
 # BACK END
 
+cd ./app
+npm start
+sequelize db:seed:all --debug
+
+
+
+
 ## Introduction
 The `backend` folder contains the files for the API. The API is relatively simple and is built using Express, Sequilize, and MySQL. *You must ensure the XAMP is running before trying to initialize the database*. 
 
