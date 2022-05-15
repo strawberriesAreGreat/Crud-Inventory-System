@@ -1,30 +1,33 @@
-const dbConfig = require("../config/db.config.js");
+const config = require("../config/config.js");
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    
+
+
+const sequelize = new Sequelize(
+  config.MYSQL.db, config.MYSQL.user, config.MYSQL.password, {
     operatorsAliases: 0,   
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
+    host: config.MYSQL.host,
+    dialect: config.MYSQL.dialect,
     operatorsAliases: false,
     pool: {
-      max: dbConfig.pool.max,
-      min: dbConfig.pool.min,
-      acquire: dbConfig.pool.acquire,
-      idle: dbConfig.pool.idle
+      max: config.MYSQL.max,
+      min: config.MYSQL.min,
+      acquire: config.MYSQL.acquire,
+      idle:config.MYSQL.idle,
+    }
   }
-});
+);
 
 const db = {};
 
 
 db.sequelize = sequelize;
 
-db.vendors = require("./address.model.js")(sequelize, Sequelize);
-db.vendors = require("./location.model.js")(sequelize, Sequelize);
-db.products = require("./product.model.js")(sequelize, Sequelize);
-db.inventories = require("./inventory.model.js")(sequelize, Sequelize);
-db.transactions = require("./transaction.model.js")(sequelize, Sequelize);
-db.items = require("./item.model.js")(sequelize, Sequelize);
+db.vendors = require("./models/address.model.js")(sequelize, Sequelize);
+db.vendors = require("./models/location.model.js")(sequelize, Sequelize);
+db.products = require("./models/product.model.js")(sequelize, Sequelize);
+db.inventories = require("./models/inventory.model.js")(sequelize, Sequelize);
+db.transactions = require("./models/transaction.model.js")(sequelize, Sequelize);
+db.items = require("./models/item.model.js")(sequelize, Sequelize);
 
 //many images to one user
 
