@@ -24,9 +24,13 @@ module.exports = (sequelize, Sequelize) => {
           },
           category: {
             type: Sequelize.STRING
-          }
+          },
+
     },
-    { tableName: 'product'});
+    { tableName: 'product',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,});
 
     return product;
 };

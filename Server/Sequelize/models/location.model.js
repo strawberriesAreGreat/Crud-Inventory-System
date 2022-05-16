@@ -19,8 +19,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       email: {
         type: Sequelize.STRING
-      }
-    },{ tableName: 'location'
+      },
+    },{ tableName: 'location',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
 });
     return location;
 };

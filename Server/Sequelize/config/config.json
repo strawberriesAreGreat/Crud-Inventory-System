@@ -1,8 +1,10 @@
 {
     "development": {
-      "username": "root",
-      "database": "woowoodev",
-      "host": "localhost",
+      "username": "y9CuS83kTD",
+      "password":"QJlBXWQmCp",
+      "database": "y9CuS83kTD",
+      "host": "remotemysql.com",
+      "port":3306,
       "dialect": "mysql"
     },
     "test": {

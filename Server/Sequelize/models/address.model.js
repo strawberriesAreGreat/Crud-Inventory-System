@@ -30,8 +30,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       longitude: {
         type: Sequelize.STRING
-      } 
-    },{ tableName: 'address'
+      },
+    },{ tableName: 'address',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
 });
     return address;
 };

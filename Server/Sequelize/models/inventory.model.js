@@ -21,8 +21,12 @@ module.exports = (sequelize, Sequelize) => {
         stock: {
             type: Sequelize.INTEGER,
         },
+
     },
-    { tableName: 'inventory'});
+    { tableName: 'inventory',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,});
     
     return inventory;
     

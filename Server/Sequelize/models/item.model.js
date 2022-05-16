@@ -21,9 +21,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         volume: {
             type: Sequelize.INTEGER
-        }
+        },
     },
-    { tableName: 'item'});
+    { tableName: 'item',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,});
 
     return item;
 };

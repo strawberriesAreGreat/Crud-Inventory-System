@@ -20,9 +20,12 @@ module.exports = (sequelize, Sequelize) => {
         references: {
         model: 'location', // <<< Note, its table's name, not object name
         key: 'location_id' // <<< Note, its a column name
-      }
+      },
     },
-    },{ tableName: 'transaction'
+    },{ tableName: 'transaction',
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
 });
     return transaction;
 };
