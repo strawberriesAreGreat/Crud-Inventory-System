@@ -33,7 +33,7 @@ const dev = {
     }
   },
   OPENWEATHER:{
-    key: "cd260c64fee9ad813a41db25ec9fac05"
+    key: "19bd731bd25d5b60aafeabd7880f06d5"
   }
 }
 

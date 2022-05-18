@@ -14,6 +14,17 @@ const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${
 
         locations: {
           type: new graphql.GraphQLList(objects.location),
+          args: { 
+            city_id: { 
+              type: graphql.GraphQLNonNull(graphql.GraphQLInt) 
+            } 
+          },  
+          extensions: {
+            joinMonster: {
+              where: (location, args, context) => {
+                return `${location}.city_id =${args.city_id}`},
+            }
+          },
           resolve: (table, args, context, resolveInfo) => {
             return joinMonster(resolveInfo, {}, sql => {
               return db.sequelize.query(sql).then(function(result) {

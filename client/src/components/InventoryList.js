@@ -15,17 +15,24 @@ const queryClient = new QueryClient();
 
 const InventoryList = () => {
 
+  const[inventory, setInventory] = React.useState('');
+
 
   {/* default city is toronto */}
   const [city, setCity] = React.useState('1');
-  const [refresh, setRefresh] = React.useState(false);
-  const [weather, setWeather] = React.useState("unknown atm");
+  const [location, setLocation] = React.useState({ location_id:"1",weather:"unknown ATM"});
+  const [warehouses, setWarehouses] = React.useState('1');
+  
+  const[refresh,forceRefresh ]= React.useState(false);
   const [hiddenMenu, setHidden] = React.useState(false);
   const [prods, setMissingProducts] = React.useState("");
-  const [newProduct, setNewProduct]= React.useState("");
+  const [findweather, pullWeather] = React.useState(false);
+
+
+  
   const SELECT_QUERY = `
   {
-    inventory(location_id:`+ city +`) {
+    inventory(location_id:`+ location.location_id +`) {
       location_id,
       sku, 
       stock, 
@@ -38,53 +45,76 @@ const InventoryList = () => {
     }
   }
   `
-  const SELECT_WEATHER = `
-  {
-    location(location_id:`+ city +`){
-      latitude
-      longitude
-      weather
-    }
-  }
-  `
   const SELECT_MISING_PRODUCTS = `
   query{
-    productsNotInInventory(location_id:`+ city +`){
+    productsNotInInventory(location_id:`+ location.location_id +`){
        sku
       name
     }
   }
   `
+  const SELECT_WAREHOUSES = `
+  query{
+    locations(city_id:`+ city +`){
+      location_id
+      street
+			longitude
+    	latitude
+    	weather
+    }
+  }
+  `
+  const FETCH_WEATHER = `
+  query{
+    location(location_id:`+ location.location_id +`){
+      location_id
+			longitude
+    	latitude
+    	weather
+    }
+  }
+  `
 
-  const toggleHidden = () => {
+  const toggleHidden = (e) => {
     console.log("hidden: " + hiddenMenu);
     setHidden(!hiddenMenu);
+    e.preventDefault();
   }
-
-  const handleCityChange = (newCity) => {
-    setCity(newCity);
-    console.log(newCity);
- }
-
- const { fetchWeather } = useQuery(['query-weather', city, refresh], () => {
-  return axios({
-    url: endpoint,
-    method: "POST",
-    data: {
-      query: SELECT_WEATHER
-    }
-  }).then( response => { setWeather(response.data.data.location[0].weather)} );
-});
-
-  const { data, isLoading, error } = useQuery(['query-tutorials', city, refresh], () => {
+  const handleCityChange = (e) => {
+    setCity(e);
+    location.location_id = e;
+    console.log("NEW CITY: " + e);
+    pullWeather(!findweather);
+  }
+  const handleWarehouseSelect = (e) => {
+    console.log(e[0]);
+    setLocation({ location_id:e[0],weather:e[1]})
+    pullWeather(!findweather);
+  }
+  const setWeather = (e) => {
+    console.log(e);
+    setLocation({ location_id:e.location_id,weather:e.weather})
+  }
+  
+  const { fetchWeather } = useQuery(['query-weather', findweather], () => {
     return axios({
       url: endpoint,
       method: "POST",
       data: {
-        query: SELECT_QUERY
+        query: FETCH_WEATHER
       }
-    }).then( response => response.data.data);
-  });
+    }).then( response => { setWeather(response.data.data.location[0])} );
+  }); 
+
+const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () => {
+  return axios({
+    url: endpoint,
+    method: "POST",
+    data: {
+      query: SELECT_WAREHOUSES
+    }
+  }).then( response => { setWarehouses(response.data.data)} );
+});
   
   const { missingProducts } = useQuery(['query-missingProducts', hiddenMenu], () => {
     return axios({
@@ -103,13 +133,13 @@ const InventoryList = () => {
       url: endpoint,
       method: "POST",
       data:{ query:  "mutation{delete_inventory(location_id:"+data.location_id+",sku:"+data.sku+"){sku}}" }
-    }).then(setRefresh( !refresh ));
+    }).then();
 
   });
 
   const addNewProduct = (event) =>{
     event.preventDefault();
-    const location_id = city; 
+    const location_id = location.location_id; 
     const sku = event.target.sku.value; 
     const stock = event.target.stock.value; 
     setHidden(!hiddenMenu);
@@ -117,11 +147,20 @@ const InventoryList = () => {
       url: endpoint,
       method: "POST",
       data:{ query:  "mutation{insert_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
-    }).then(setRefresh(!refresh));
+    }).then( forceRefresh(!refresh) );
   }
+  
+  const { data, isLoading, error } = useQuery(['query-tutorials', location, city, refresh], () => {
+    return axios({
+      url: endpoint,
+      method: "POST",
+      data: {
+        query: SELECT_QUERY
+      }
+    }).then( response => setInventory(response.data.data));
+  });
 
-
-
+  
   const handleSubmit = (event) => {
     {/*getting the form to behave was the hardest part of this entire project */}
     console.log(event.target.stock.value);
@@ -133,7 +172,7 @@ const InventoryList = () => {
       url: endpoint,
       method: "POST",
       data:{ query:  "mutation{update_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
-    }).then(setRefresh(!refresh));
+    }).then( forceRefresh(!refresh) );
   };
 
   if (isLoading) return "Loading...";
@@ -149,15 +188,20 @@ const InventoryList = () => {
       <div>
         <div className='location_name'>
             <select name="city" value={city} onChange={event => handleCityChange(event.target.value)}>
-              <option id="1" value="1">West Toronto</option>
-              <option id="2" value="2">Montreal - Plateau </option>
-              <option id="3" value="3">Central Chicago</option>
-              <option id="4" value="4">Oak Hill</option>
+              <option id="1" value="1">Toronto</option>
+              <option id="2" value="2">Montreal</option>
+              <option id="3" value="3">Chicago</option>
+              <option id="4" value="4">Nashville</option>
               <option id="5" value="5">Columbus</option>
+            </select>
+            <select onChange={event => handleWarehouseSelect(event.target.value)}>
+            {warehouses.locations.map((location) => (
+              <option  value={[location.location_id,location.weather]} >{location.street}</option>
+              ))}
             </select>
             </div>
             <div className='location_weather'>
-            <h3> {weather}</h3>
+            <h3> {location.weather}</h3>
             </div>
             <div className='add'>
             <button onClick={() => { toggleHidden() }}>
@@ -208,7 +252,7 @@ const InventoryList = () => {
           </div>
 
         </div>
-        {data.inventory.map((unit) => (
+        {inventory.inventory.map((unit) => (
 
           <div className='inventory-item'>
             <li key={unit.sku}>
