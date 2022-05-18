@@ -1,24 +1,24 @@
 const graphql = require('graphql');
 var GraphQLDate = require('graphql-date');
 
-  const location = new graphql.GraphQLObjectType({
-    name: 'location',
+  const city = new graphql.GraphQLObjectType({
+    name: 'city',
     extensions: {
       joinMonster: {
-        sqlTable: "location", 
-        uniqueKey: 'location_id',
+        sqlTable: "city", 
+        uniqueKey: 'city_id',
       }
     },
     fields: () => ({
-      location_id: { type: graphql.GraphQLInt },
+      city_id: { type: graphql.GraphQLInt },
       name: { type: graphql.GraphQLString },
       phone: { type: graphql.GraphQLString },
       email: { type: graphql.GraphQLString },
-      address: {
-        type:  new graphql.GraphQLList(address), 
+      locations: {
+        type:  new graphql.GraphQLList(location), 
         extensions: {
           joinMonster: {
-            sqlJoin: (location, address, args) => `${location}.location_id = ${address}.location_id`
+            sqlJoin: (city, location, args) => `${city}.city_id = ${location}.city_id`
             
             }
           }
@@ -42,11 +42,11 @@ var GraphQLDate = require('graphql-date');
     })
   });   
   
-  const address = new graphql.GraphQLObjectType({
-    name: 'address',
+  const location = new graphql.GraphQLObjectType({
+    name: 'location',
     extensions: {
       joinMonster: {
-        sqlTable: "address",
+        sqlTable: "location",
         uniqueKey: 'location_id',      
       }
     },
@@ -59,9 +59,10 @@ var GraphQLDate = require('graphql-date');
       zipCode: { type: graphql.GraphQLString },
       latitude: { type: graphql.GraphQLString },
       longitude: { type: graphql.GraphQLString },
-      address: {
-        type: location,
-        sqlJoin: (address, location, args) => `${address}.location_id = ${location}.location_id`
+      weather: { type: graphql.GraphQLString },
+      city: {
+        type: city,
+        sqlJoin: (location, city, args) => `${location}.city_id = ${city}.city_id`
       }
     })
   });   
@@ -84,8 +85,7 @@ const inventory = new graphql.GraphQLObjectType({
         type:  new graphql.GraphQLList(product), 
         extensions: {
           joinMonster: {
-            sqlJoin: (inventory, product, args) => `${inventory}.sku = ${product}.sku`
-            
+            sqlJoin: (inventory, product, args) => `${inventory}.sku = ${product}.sku`      
             }
           }
       }
@@ -190,8 +190,9 @@ const weather = new graphql.GraphQLObjectType({
 
   
   
-exports.address = address;
+exports.city = city;
 exports.location = location;
 exports.inventory = inventory;
 exports.transaction = transaction;
 exports.weather = weather;
+exports.product = product;

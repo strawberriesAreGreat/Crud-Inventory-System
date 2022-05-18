@@ -8,9 +8,9 @@ const s = require('./GraphQL/schema');
 const config = require('./config/config')
 
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+//db.sequelize.sync({ force: true }).then(() => {
+ // console.log("Drop and re-sync db.");
+//});
 
 //port 
 const PORT = process.env.PORT || config.EXPRESS.PORT;

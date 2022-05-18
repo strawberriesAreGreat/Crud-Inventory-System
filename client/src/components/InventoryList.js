@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider, useQuery,useMutation } from "react-qu
 import './InventoryList.css';
 import rmv from './delete.png';
 import save from './save.png';
+import add from './add.png';
 import { set, useForm } from "react-hook-form";
 const endpoint = "http://localhost:8080/api";
 
@@ -14,9 +15,14 @@ const queryClient = new QueryClient();
 
 const InventoryList = () => {
 
+
   {/* default city is toronto */}
   const [city, setCity] = React.useState('1');
   const [refresh, setRefresh] = React.useState(false);
+  const [weather, setWeather] = React.useState("unknown atm");
+  const [hiddenMenu, setHidden] = React.useState(false);
+  const [prods, setMissingProducts] = React.useState("");
+  const [newProduct, setNewProduct]= React.useState("");
   const SELECT_QUERY = `
   {
     inventory(location_id:`+ city +`) {
@@ -32,11 +38,43 @@ const InventoryList = () => {
     }
   }
   `
+  const SELECT_WEATHER = `
+  {
+    location(location_id:`+ city +`){
+      latitude
+      longitude
+      weather
+    }
+  }
+  `
+  const SELECT_MISING_PRODUCTS = `
+  query{
+    productsNotInInventory(location_id:`+ city +`){
+       sku
+      name
+    }
+  }
+  `
+
+  const toggleHidden = () => {
+    console.log("hidden: " + hiddenMenu);
+    setHidden(!hiddenMenu);
+  }
+
   const handleCityChange = (newCity) => {
     setCity(newCity);
     console.log(newCity);
  }
 
+ const { fetchWeather } = useQuery(['query-weather', city, refresh], () => {
+  return axios({
+    url: endpoint,
+    method: "POST",
+    data: {
+      query: SELECT_WEATHER
+    }
+  }).then( response => { setWeather(response.data.data.location[0].weather)} );
+});
 
   const { data, isLoading, error } = useQuery(['query-tutorials', city, refresh], () => {
     return axios({
@@ -45,8 +83,19 @@ const InventoryList = () => {
       data: {
         query: SELECT_QUERY
       }
-    }).then(response => response.data.data);
+    }).then( response => response.data.data);
   });
+  
+  const { missingProducts } = useQuery(['query-missingProducts', hiddenMenu], () => {
+    return axios({
+      url: endpoint,
+      method: "POST",
+      data: {
+        query: SELECT_MISING_PRODUCTS
+      }
+    }).then( response => { setMissingProducts(response.data.data)} );
+  });
+  
 
   const mutation = useMutation(data => {
 
@@ -57,6 +106,21 @@ const InventoryList = () => {
     }).then(setRefresh( !refresh ));
 
   });
+
+  const addNewProduct = (event) =>{
+    event.preventDefault();
+    const location_id = city; 
+    const sku = event.target.sku.value; 
+    const stock = event.target.stock.value; 
+    setHidden(!hiddenMenu);
+    axios({
+      url: endpoint,
+      method: "POST",
+      data:{ query:  "mutation{insert_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
+    }).then(setRefresh(!refresh));
+  }
+
+
 
   const handleSubmit = (event) => {
     {/*getting the form to behave was the hardest part of this entire project */}
@@ -69,16 +133,8 @@ const InventoryList = () => {
       url: endpoint,
       method: "POST",
       data:{ query:  "mutation{update_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
-  }).then(setRefresh(!refresh));
+    }).then(setRefresh(!refresh));
   };
-
-   useMutation((location_id, sku, stock) => {
-    return axios({
-      url: endpoint,
-      method: "POST",
-      data:{ query:  "mutation{delete_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
-    })
-  });
 
   if (isLoading) return "Loading...";
   if (error) return <pre>{error.message}</pre>;
@@ -86,34 +142,72 @@ const InventoryList = () => {
   return (
  
     <div>
-      <div className='head'>
-        <div className='location_details'>
-          <div className='location_name'>
-          <select name="city" value={city} onChange={event => handleCityChange(event.target.value)}>
-            <option id="1" value="1">West Toronto</option>
-            <option id="2" value="2">Montreal - Plateau </option>
-            <option id="3" value="3">Central Chicago</option>
-            <option id="4" value="4">Oak Hill</option>
-            <option id="5" value="5">Columbus</option>
-          </select>
-          </div>
-          <div className='location_weather'>
-           <h3> Right now conditions are sunny, with a temperature of 21 celcius but feeling like 15.</h3>
-          </div>
-        </div>
-        <div className='inventory-item'>
-          <div className='sku'>sku</div>
-          <div className=' name'>product name</div>
-          <div className='price'>price</div>
-          <div className='stock'>inventory count</div>
-          <div className='category'>product category</div>
-          <div className='description'>product description</div>
-          <div className='edit'> save changes delete</div>
-          <div className='delete'> delete</div>
-        </div>
-      </div>
+  
       <div className='body'>
       <ul>
+        
+      <div>
+        <div className='location_name'>
+            <select name="city" value={city} onChange={event => handleCityChange(event.target.value)}>
+              <option id="1" value="1">West Toronto</option>
+              <option id="2" value="2">Montreal - Plateau </option>
+              <option id="3" value="3">Central Chicago</option>
+              <option id="4" value="4">Oak Hill</option>
+              <option id="5" value="5">Columbus</option>
+            </select>
+            </div>
+            <div className='location_weather'>
+            <h3> {weather}</h3>
+            </div>
+            <div className='add'>
+            <button onClick={() => { toggleHidden() }}>
+                  <img src={add} alt='add' width='30vw'/>   
+            </button>
+              {hiddenMenu &&  
+            
+              <div className='inventory_form'>
+                <form onSubmit={ addNewProduct }>
+                <table>
+                  <tr>
+                    <th>Select Product</th>
+                    <select name="sku" id="newProduct">
+                      {prods.productsNotInInventory.map((product) => (
+                      <option  value={product.sku} >{product.name}</option>
+                      ))}
+                    </select>
+                    </tr>
+                  <tr>
+                    <td>Current Inventory Stock</td>
+                    <td> 
+                      <input
+                      type="number"
+                      id="stock"
+                      name="stock"
+                      defaultValue="0"
+                      />
+                    </td>
+                  
+                  </tr>
+                </table>
+                <button type="submit" >
+                  <img src={save} alt='save' width='30vw'/>
+                </button>
+                </form> 
+              </div>
+              }
+            </div>
+        <div className='inventory-titles'>
+            <div className='sku'>sku</div>
+            <div className='name'>product name</div>
+            <div className='price'>price</div>
+            <div className='stock'>inventory count</div>
+            <div className='category'>product category</div>
+            <div className='description'>product description</div>
+            <div className='edit'> save changes delete</div>
+            <div className='delete'> delete</div>
+          </div>
+
+        </div>
         {data.inventory.map((unit) => (
 
           <div className='inventory-item'>
@@ -130,7 +224,6 @@ const InventoryList = () => {
                       id="stock"
                       name="stock"
                       defaultValue={unit.stock} 
-                  
                   />
                 </div>
                 <div className='category'> {unit.product[0].category} </div>
@@ -164,3 +257,4 @@ export default function Wraped(){
       </QueryClientProvider>
   );
   }
+  

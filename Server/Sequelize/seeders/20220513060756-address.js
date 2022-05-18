@@ -4,6 +4,7 @@ const falso = require('@ngneat/falso');
 const fiveAddresses = [
   {
     location_id:1,
+      city_id:1,
       country:"Canada",
       region:"Ontario",
       city:"Toronto",
@@ -14,6 +15,7 @@ const fiveAddresses = [
   },
   {
     location_id:2,
+      city_id:2,
       country:"Canada",
       region:"Quebec",
       city:"Montreal",
@@ -24,6 +26,7 @@ const fiveAddresses = [
   },
   {
     location_id:3,
+      city_id:3,
       country:"United States",
       region:"Illinois",
       city:"Chicago",
@@ -34,6 +37,7 @@ const fiveAddresses = [
   },
   {
     location_id:4,
+      city_id:4,
       country:"United States",
       region:"Tennessee",
       city:"Oak Hill",
@@ -44,6 +48,7 @@ const fiveAddresses = [
   },
   {
     location_id:5,
+      city_id:5,
       country:"United States",
       region:"Ohio",
       city:"Columbus",
@@ -55,11 +60,11 @@ const fiveAddresses = [
 ]
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('address', fiveAddresses,{ ignoreDuplicates: true });
+    return queryInterface.bulkInsert('location', fiveAddresses,{ ignoreDuplicates: true });
 
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('address', null, {});
+    return queryInterface.bulkDelete('location', null, {});
   }
 };

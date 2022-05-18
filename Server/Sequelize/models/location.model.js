@@ -8,16 +8,35 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      name: {
+      city_id: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: 'city', // <<< Note, its table's name, not object name
+            key: 'city_id' // <<< Note, its a column name
+          }
+      },
+      country: {
         type: Sequelize.STRING
       },
-      phone: {
+      region: {
         type: Sequelize.STRING
       },
-      email: {
+      city: {
         type: Sequelize.STRING
       },
-      email: {
+      street: {
+        type: Sequelize.STRING
+      },
+      zipCode: {
+        type: Sequelize.STRING
+      },
+      latitude: {
+        type: Sequelize.STRING
+      },
+      longitude: {
+        type: Sequelize.STRING
+      },
+      weather: {
         type: Sequelize.STRING
       },
     },{ tableName: 'location',

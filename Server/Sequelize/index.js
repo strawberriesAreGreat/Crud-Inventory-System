@@ -22,8 +22,9 @@ const db = {};
 
 db.sequelize = sequelize;
 
-db.vendors = require("./models/address.model.js")(sequelize, Sequelize);
-db.vendors = require("./models/location.model.js")(sequelize, Sequelize);
+
+db.city = require("./models/city.model.js")(sequelize, Sequelize);
+db.location = require("./models/location.model.js")(sequelize, Sequelize);
 db.products = require("./models/product.model.js")(sequelize, Sequelize);
 db.inventories = require("./models/inventory.model.js")(sequelize, Sequelize);
 db.transactions = require("./models/transaction.model.js")(sequelize, Sequelize);

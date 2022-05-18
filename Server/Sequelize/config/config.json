@@ -1,14 +1,20 @@
 {
     "development": {
-      "username": "y9CuS83kTD",
-      "password":"QJlBXWQmCp",
-      "database": "y9CuS83kTD",
-      "host": "remotemysql.com",
+      "username": "root",
+      "password":"",
+      "database": "woowoodev",
+      "host": "localhost",
       "port":3306,
       "dialect": "mysql"
     },
-    "test": {
-    },
     "production": {
-    }
+        "username": "y9CuS83kTD",
+        "password":"QJlBXWQmCp",
+        "database": "y9CuS83kTD",
+        "host": "remotemysql.com",
+        "port":3306,
+        "dialect": "mysql"
+      },
+    "test": {
+    } 
   }

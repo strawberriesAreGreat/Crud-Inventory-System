@@ -5,6 +5,7 @@ const joinMonster = require('join-monster').default;
 const axios = require("axios");
 const config = require("../config/config.js");
 const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${config.OPENWEATHER.key}`;
+//const productModels = require('../Sequelize/product.model')
 
   exports.Queryroot = new graphql.GraphQLObjectType({
           
@@ -31,21 +32,69 @@ const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${
           extensions: {
             joinMonster: {
               where: (location, args, context) => {
-                return `${location}.location_id = ${args.location_id}`},
+                return `${location}.location_id =${args.location_id}`},
             }
           },
           resolve: (parent, args, context, resolveInfo) => {
             return joinMonster(resolveInfo, {}, sql => {
               return db.sequelize.query(sql).then(function(result) {
-                console.log(result[0]) ;
+                const lat =  result[0][0].latitude;
+                const long = result[0][0].longitude;
+                const url = `${openWeatherURL}&lat=${lat}&lon=${long}`;
+                var oldResult = result;
+        
+                async function axiosTest(url) {
+                  const promise = axios.get(url)
+                      .then( resp => {
+                        var data =  (
+                          "Conditions right now: " 
+                          + resp.data.weather[0].description
+                          + " with a temperature of "
+                          + Math.round(resp.data.main.temp -273.15 )
+                          + " but feels like "
+                          + Math.round(resp.data.main.feels_like -273.15 )
+                        );
+                        return data;
+                    })
+                    return promise;
+                  }
+                  let weather = axiosTest(url);
+                  return weather.then( function(result){
+                    oldResult[0][0].weather = result;              
+                    console.log(oldResult[0]);
+                    return oldResult[0];
+                  })
+                  
+                
+              
+              });
+            }, 
+            {dialect: 'mysql'});
+         }
+        },
+
+        productsNotInInventory: {
+          type: new graphql.GraphQLList(objects.product),
+          args: { 
+            location_id: { 
+              type: graphql.GraphQLNonNull(graphql.GraphQLInt) 
+            } 
+          },
+          extensions: {
+            joinMonster: {
+              where: (product, args, context) => {
+                return `sku NOT IN (SELECT sku FROM inventory WHERE location_id= ${args.location_id} )`},
+            }
+          },
+          resolve: (parent, args, context, resolveInfo) => {  
+            return joinMonster(resolveInfo, {}, sql => {
+              return db.sequelize.query(sql).then(function(result) {
+                console.log(result[0]);
                 return result[0];
               });
             }, 
             {dialect: 'mysql'});
          }
-
-
-
         },
 
         inventory: {
@@ -57,11 +106,12 @@ const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${
           },
           extensions: {
             joinMonster: {
+              
               where: (inventory, args, context) => {
                 return `${inventory}.location_id = ${args.location_id}`},
             }
           },
-          resolve: (parent, args, context, resolveInfo) => {
+          resolve: (parent, args, context, resolveInfo) => {  
             return joinMonster(resolveInfo, {}, sql => {
               return db.sequelize.query(sql).then(function(result) {
                 return result[0];
@@ -87,38 +137,12 @@ const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${
           resolve: (parent, args, context, resolveInfo) => {
             return joinMonster(resolveInfo, {}, sql => {
               return db.sequelize.query(sql).then(function(result) {
-                return result[0];
+                return result[0]
               });
             }, 
             {dialect: 'mysql'});
          }
-        },
-
-        getWeather: {
-          type: new graphql.GraphQLList(objects.weather),
-          args: { 
-            lat: { type: graphql.GraphQLNonNull(graphql.GraphQLFloat) },
-            lon: { type: graphql.GraphQLNonNull(graphql.GraphQLFloat) }
-          },
-          resolve: (parent, args, context,) => {
-          const { lat, lon } = args;
-          let url = `${openWeatherURL}&lat=${lat}&lon=${lon}`;
-
-              axios.get(url)
-              .then( resp => {
-
-                console.log(resp.data);
-                return resp.data;
-                
-            }).catch (err => {
-              console.log(err);
-              console.error("OOPS. Something went wrong with your query to Open Weather!")
-            })
-      }
-    }
-
-
-
+        }
       })
       
     })

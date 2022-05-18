@@ -5,13 +5,26 @@ const dev = {
     //port 
     PORT: parseInt(process.env.PORT) || 8080
   },
-  MYSQL:{
+  /*MYSQL:{
     host: "remotemysql.com",
     user: "y9CuS83kTD",
     db: "y9CuS83kTD",
     password:"QJlBXWQmCp",
     dialect: "mysql",
     port:3306,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }*/
+    MYSQL:{
+    host: "localhost",
+    user: "root",
+    db: "woowoodev",
+    password:"",
+    dialect: "mysql",
+    port:8080,
     pool: {
       max: 5,
       min: 0,

@@ -1,51 +1,79 @@
 
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+  }
 * {
     vertical-align: middle;
     text-align: center;
     list-style-type: none;
     font-family: 'Anek Kannada', sans-serif;
 }
+.add{
+    display: inline-block;
+}
+input {
+    width: 3vw;
+}
 .ul{
     margin-left: 0;;
 }
-.head{
-    margin-left: 2vw;
-    width:100w;
-    background-color: lightcoral;
+.inventory_form{
+    width:90vw;
+    height: 25vh;
+    left:5vw;
+    position: absolute;
+    z-index: 99 !important; 
+    background-color: royalblue;
 }
-.body{
-   margin-left: auto;
-   margin-right: auto;
-    width:100vw;
-    background-color: pink;
+.head{
+    margin-left: 9vw;
+    width:80vw;
+    background-color: lightcoral;
 }
 .location_name{
     display: inline-block;
-    background-color: beige;
+    background-color: red;
+    width: 25%;
 }
 .location_weather{
     display: inline-block;
     background-color: orange;
+    width: 50%;
+}
+.add_inventory_button{
+    display: inline-block;
+    background-color: orange;
+    width: 50%;
 }
 .inventory-item{
-    width:92vw;
+    margin-left: 7vw;
+    width:80vw;
     background-color: lightcoral;
+}
+.inventory-titles{
+    margin-left: 7vw;
+    border-top: 5px solid black;
+    width:80vw;
+    background-color: orange;
 }
 .sku{
     border-left: 5px solid black;
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 3vw;
-    background-color: aqua;
+    width: 10%;
 }
 .name{
     border-left: 0px;
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 20vw;
+    width: 17%;
     background-color: aqua;
 }
 .price{
@@ -53,7 +81,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black; 
     display: table-cell;
-    width: 7vw;
+    width: 10%;
     background-color: aqua;
 }
 .stock{
@@ -61,7 +89,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 3vw;
+    width: 10%;
     background-color: aqua;
 }
 .description{
@@ -69,7 +97,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 36vw;
+    width: 27%;
     background-color: aqua;
 }
 .category{
@@ -77,7 +105,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 10vw;
+    width: 10%;
     background-color: aqua;
 }
 .delete{
@@ -85,7 +113,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 3vw;
+    width: 8%;
     background-color: aqua;
 }
 .edit{
@@ -93,6 +121,6 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 3vw;
+    width: 8%;
     background-color: aqua;
 }

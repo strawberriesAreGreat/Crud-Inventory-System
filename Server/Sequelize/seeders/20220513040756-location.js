@@ -30,11 +30,11 @@ const fiveVendors = [
 ]
 module.exports = { 
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('location', fiveVendors, {});
+    return queryInterface.bulkInsert('city', fiveVendors, {});
 
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('location', null, {});
+    return queryInterface.bulkDelete('city', null, {});
   }
 };
