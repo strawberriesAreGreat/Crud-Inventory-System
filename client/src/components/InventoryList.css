@@ -1,0 +1,80 @@
+
+
+* {
+    vertical-align: middle;
+    text-align: center;
+    list-style-type: none;
+    font-family: 'Anek Kannada', sans-serif;
+}
+
+.inventory-item{
+    padding-left: 0vw;
+    display: table;
+    width: 100%;
+    width:90vw;
+    background-color: lightcoral;
+}
+.sku{
+    border-left: 5px solid black;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 3vw;
+    background-color: aqua;
+}
+.name{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 20vw;
+    background-color: aqua;
+}
+.price{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black; 
+    display: table-cell;
+    width: 7vw;
+    background-color: aqua;
+}
+.stock{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 3vw;
+    background-color: aqua;
+}
+.description{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 36vw;
+    background-color: aqua;
+}
+.category{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 10vw;
+    background-color: aqua;
+}
+.delete{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 4vw;
+    background-color: aqua;
+}
+.edit{
+    border-left: 0px;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: table-cell;
+    width: 4vw;
+    background-color: aqua;
+}

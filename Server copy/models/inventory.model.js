@@ -1,26 +1,30 @@
+const { user } = require(".");
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
     const inventory = sequelize.define("inventory", {    
         location_id: {
             primaryKey: true,
-            type: DataTypes.INTEGER,
-            references: {
-            model: 'location', 
-            key: 'location_id' 
+          type: DataTypes.INTEGER,
+          references: {
+            model: 'location', // <<< Note, its table's name, not object name
+            key: 'location_id' // <<< Note, its a column name
           }
         },
-        sku: {
+        item_id: {
             primaryKey: true,
             type: DataTypes.INTEGER,
             references: {
-                model: 'product',
-                key: 'sku' 
+                model: 'item',
+                key: 'item_id' 
             }
         },
         stock: {
             type: Sequelize.INTEGER,
         },
+        unitsSold: {
+            type: Sequelize.INTEGER,
+        }
     },
     { tableName: 'inventory'});
     

@@ -1,9 +1,10 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
-    const product = sequelize.define("product", {    
-          sku: {
+    const item = sequelize.define("item", {    
+        item_id: {
             allowNull: false,
+            autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
           },
@@ -14,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           },
           price: {
-            type: Sequelize.INTEGER
+            type: Sequelize.STRING
           },
           rating_rate: {
             type: Sequelize.INTEGER
@@ -24,13 +25,9 @@ module.exports = (sequelize, Sequelize) => {
           },
           category: {
             type: Sequelize.STRING
-          },
-
+          }
     },
-    { tableName: 'product',
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false,});
+    { tableName: 'item'});
 
-    return product;
+    return item;
 };

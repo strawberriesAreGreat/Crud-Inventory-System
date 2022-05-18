@@ -3,32 +3,32 @@ const falso = require('@ngneat/falso');
 
 const fiveVendors = [
   {
-      name: "West Toronto",
+      location: "West Toronto",
       phone: falso.randUser().phone,
       email:falso.randUser().email
   },
   {
-      name: "Montreal - Plateau ",
+      location: "Montreal - Plateau ",
       phone: falso.randUser().phone,
       email:falso.randUser().email
   },
   {
-      name: "Central Chicago",
+      location: "Central Chicago",
       phone: falso.randUser().phone,
       email:falso.randUser().email
   },
   {
-      name: "Oak Hill",
+      location: "Oak Hill",
       phone: falso.randUser().phone,
       email:falso.randUser().email
   },
   {
-      name: "Columbus",
+      location: "Columbus",
       phone: falso.randUser().phone,
       email:falso.randUser().email
   }
 ]
-module.exports = { 
+module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('location', fiveVendors, {});
 

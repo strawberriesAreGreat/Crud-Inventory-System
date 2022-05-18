@@ -4,9 +4,7 @@ cd ./app
 npm start
 sequelize db:seed:all --debug
 
-TO DO: 
-create `.sequelizerc' file and remove config.json file being used by 
-sequelize-cli to populate the db 
+
 
 
 ## Introduction
