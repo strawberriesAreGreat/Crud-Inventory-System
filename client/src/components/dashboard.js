@@ -3,8 +3,7 @@ import './dashboard.css'
 import { useState } from "react";
 
 import InventoryList from './InventoryList';
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-const queryClient = new QueryClient();
+
 
 class dashboard extends React.Component{
     
@@ -31,10 +30,7 @@ class dashboard extends React.Component{
     render(){
         return(
             <div>
-                <h1> HEY</h1>
-                <QueryClientProvider client={queryClient}>
                 <InventoryList  />
-                </QueryClientProvider>
             </div>
         );
 }

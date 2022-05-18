@@ -6,12 +6,30 @@
     list-style-type: none;
     font-family: 'Anek Kannada', sans-serif;
 }
-
+.ul{
+    margin-left: 0;;
+}
+.head{
+    margin-left: 2vw;
+    width:100w;
+    background-color: lightcoral;
+}
+.body{
+   margin-left: auto;
+   margin-right: auto;
+    width:100vw;
+    background-color: pink;
+}
+.location_name{
+    display: inline-block;
+    background-color: beige;
+}
+.location_weather{
+    display: inline-block;
+    background-color: orange;
+}
 .inventory-item{
-    padding-left: 0vw;
-    display: table;
-    width: 100%;
-    width:90vw;
+    width:92vw;
     background-color: lightcoral;
 }
 .sku{
@@ -67,7 +85,7 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 4vw;
+    width: 3vw;
     background-color: aqua;
 }
 .edit{
@@ -75,6 +93,6 @@
     border-bottom: 5px solid black;
     border-right: 5px solid black;
     display: table-cell;
-    width: 4vw;
+    width: 3vw;
     background-color: aqua;
 }
