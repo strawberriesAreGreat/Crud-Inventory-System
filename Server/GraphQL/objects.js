@@ -57,8 +57,8 @@ var GraphQLDate = require('graphql-date');
       city: { type: graphql.GraphQLString },
       street: { type: graphql.GraphQLString },
       zipCode: { type: graphql.GraphQLString },
-      latitude: { type: graphql.GraphQLString },
-      longitude: { type: graphql.GraphQLString },
+      latitude: { type: graphql.GraphQLFloat },
+      longitude: { type: graphql.GraphQLFloat },
       weather: { type: graphql.GraphQLString },
       city: {
         type: city,

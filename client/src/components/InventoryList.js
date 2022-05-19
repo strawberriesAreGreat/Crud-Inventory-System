@@ -25,6 +25,7 @@ const InventoryList = () => {
   
   const[refresh,forceRefresh ]= React.useState(false);
   const [hiddenMenu, setHidden] = React.useState(false);
+  const [hiddenMenu2, setHidden2] = React.useState(false);
   const [prods, setMissingProducts] = React.useState("");
   const [findweather, pullWeather] = React.useState(false);
 
@@ -78,6 +79,10 @@ const InventoryList = () => {
   const toggleHidden = (e) => {
     console.log("hidden: " + hiddenMenu);
     setHidden(!hiddenMenu);
+    e.preventDefault();
+  }
+  const toggleHidden2 = (e) => {  
+    setHidden2(!hiddenMenu2);
     e.preventDefault();
   }
   const handleCityChange = (e) => {
@@ -149,7 +154,34 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
       data:{ query:  "mutation{insert_inventory(location_id:"+location_id+",sku:"+sku+",stock:"+stock+"){sku}}" }
     }).then( forceRefresh(!refresh) );
   }
-  
+  const addNewLocation = (event) =>{
+    event.preventDefault();
+
+
+
+    console.log(event);
+
+    const city_id = String(event.target[0].value);
+    const country = String(event.target[3].value);
+    const region = String(event.target[4].value);
+    const city =String(event.target[5].value);
+    const street =String(event.target[6].value);
+    const zipCode = String(event.target[7].value);
+    const latitude = String(event.target[1].value);
+    const longitude = String(event.target[2].value);
+
+    const ourQuery =  "mutation{insert_location(city_id:"+city_id+",country:\""+country+"\",region:\""+region+"\",city:\""+city+"\", street:\" "+street+"\",zipCode:\""+zipCode+"\",latitude:"+latitude+", longitude:"+longitude+") { location_id }}"
+    console.log(ourQuery);
+    setHidden2(!hiddenMenu2);
+    axios({
+      url: endpoint,
+      method: "POST",
+      data:{ query: ourQuery }
+    }).then( forceRefresh(!refresh) );
+  }
+
+
+
   const { data, isLoading, error } = useQuery(['query-tutorials', location, city, refresh], () => {
     return axios({
       url: endpoint,
@@ -207,6 +239,9 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
             <button onClick={() => { toggleHidden() }}>
                   <img src={add} alt='add' width='30vw'/>   
             </button>
+            <button onClick={() => { toggleHidden2() }}>
+                  <img src={add} alt='add' width='30vw'/>   
+            </button>
               {hiddenMenu &&  
             
               <div className='inventory_form'>
@@ -239,6 +274,105 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
                 </form> 
               </div>
               }
+                {hiddenMenu2 &&  
+            
+            <div className='inventory_form'>
+              <form onSubmit={ addNewLocation }>
+                <table>
+                  <tr>
+                    <th>Select city</th>
+                    <select id="city_id" name="city_id">
+                      <option id="1" value="1">Toronto</option>
+                      <option id="2" value="2">Montreal</option>
+                      <option id="3" value="3">Chicago</option>
+                      <option id="4" value="4">Nashville</option>
+                      <option id="5" value="5">Columbus</option>
+                    </select>
+                    </tr>
+                  <tr>
+                    <td>latitude</td>
+                    <td><input
+                      type="number"
+                      id="latitude"
+                      name="latitude"
+                      step="any"
+                      defaultValue="0.0"
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>logitude</td>
+                    <td> 
+                      <input
+                      type="number"
+                      id="logitude"
+                      name="logitude"
+                      step="any"
+                      defaultValue="0.0"
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>country</td>
+                    <td> 
+                      <input
+                      type="text"
+                      id="country"
+                      name="country"
+                
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>region</td>
+                    <td> 
+                      <input
+                      type="text"
+                      id="region"
+                      name="region"
+              
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>city</td>
+                    <td> 
+                      <input
+                      type="text"
+                      id="city"
+                      name="city"
+                     
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>street</td>
+                    <td> 
+                      <input
+                      type="text"
+                      id="street"
+                      name="street"
+                      />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>postal code</td>
+                    <td> 
+                      <input
+                      type="text"
+                      id="postalCode"
+                      name="postalCode"
+                      />
+                    </td>
+                    </tr>
+               
+                </table>
+                <button type="submit" >
+                  <img src={save} alt='save' width='30vw'/>
+                </button>
+              </form> 
+            </div>
+            }
             </div>
         <div className='inventory-titles'>
             <div className='sku'>sku</div>
@@ -247,7 +381,7 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
             <div className='stock'>inventory count</div>
             <div className='category'>product category</div>
             <div className='description'>product description</div>
-            <div className='edit'> save changes delete</div>
+            <div className='edit'> save changes</div>
             <div className='delete'> delete</div>
           </div>
 

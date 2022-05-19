@@ -104,7 +104,51 @@ exports.MutationRoot = new graphql.GraphQLObjectType({
           ERROR = true;
           });
         }
-      }
+      },
+      insert_location: {
+        type: objects.inventory,
+
+        args: {
+          city_id: { type: graphql.GraphQLInt },
+          country: { type: graphql.GraphQLString },
+          region: { type: graphql.GraphQLString },
+          city: { type: graphql.GraphQLString },
+          street: { type: graphql.GraphQLString },
+          zipCode: { type: graphql.GraphQLString },
+          latitude: { type: graphql.GraphQLFloat},
+          longitude: { type: graphql.GraphQLFloat },
+        },
+        resolve (parent, args, context, resolveInfo){
+        
+          return db.sequelize.query(
+            'INSERT INTO `location`( city_id, country, region, city, street, zipCode, latitude, longitude) VALUES ( :city_id, :country, :region, :city, :street, :zipCode, :latitude, :longitude)',
+            {
+              replacements: {
+
+                city_id: args.city_id,
+                country: args.country,
+                region: args.region,
+                city: args.city,
+                street: args.street,
+                zipCode: args.zipCode,
+                latitude: args.latitude,
+                longitude: args.longitude,
+
+               },
+              type: QueryTypes.INSERT
+            }
+          )
+          .catch( (err) => {
+            if (err.code === 'ER_DUP_ENTRY') {
+              console.error("ERROR: Duplicate entries.")
+            }else if(err.errno === 1452){
+              console.error("ERROR: Foreign Key Constraint.")
+            } else {
+              console.error("ERROR. SQL is mad at you! Check your query.")
+            }
+          });
+        }
+      },
 
 
 
