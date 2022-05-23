@@ -68,9 +68,6 @@ Used to assist in creating dynamic sql queries based on GraphQL query parameters
 ## Adding inventory to a warehouse location
 ![](Documents/add_inventory.gif)
 
-## Updating inventory
-![](Documents/update.gif)
-
 
 ## Editing inventory
 ![](Documents/edit.gif)
