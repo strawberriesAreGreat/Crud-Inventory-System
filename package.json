@@ -2,6 +2,14 @@
   "dependencies": {
     "@apollo/client": "^3.6.4",
     "adminbsb-materialdesign": "^1.0.7",
+    "dotenv": "^16.0.1",
     "sequelize": "^6.19.0"
+  },
+  "scripts": {
+    "client": "cd client && npm start",
+    "backend": "cd Server && npm start && cd Sequelize",
+    "start": "concurrently \"npm run backend\" \"npm run client\""
   }
 }
+
+

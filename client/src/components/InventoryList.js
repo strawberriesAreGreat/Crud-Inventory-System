@@ -6,7 +6,7 @@ import rmv from './delete.png';
 import save from './save.png';
 import add from './add.png';
 import { set, useForm } from "react-hook-form";
-const endpoint = "http://localhost:8080/api";
+const endpoint = ("http://localhost:2000/api");
 
 const queryClient = new QueryClient();
 

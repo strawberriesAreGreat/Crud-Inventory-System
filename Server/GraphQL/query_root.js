@@ -3,8 +3,7 @@ const objects = require('./objects');
 const db = require("../Sequelize");
 const joinMonster = require('join-monster').default;
 const axios = require("axios");
-const config = require("../config/config.js");
-const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${config.OPENWEATHER.key}`;
+const openWeatherURL = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.openweather}`;
 //const productModels = require('../Sequelize/product.model')
 
   exports.Queryroot = new graphql.GraphQLObjectType({

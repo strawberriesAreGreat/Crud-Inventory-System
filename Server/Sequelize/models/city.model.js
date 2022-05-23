@@ -17,9 +17,6 @@ module.exports = (sequelize, Sequelize) => {
       email: {
         type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING
-      },
     },{ tableName: 'city',
     timestamps: false,
     createdAt: false,
