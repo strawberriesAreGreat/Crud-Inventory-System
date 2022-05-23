@@ -42,19 +42,16 @@ This project is a full-stack application. The front end is made using React. The
 ## STACK
 
 ### GraphQL
-An admitatdly rough implementation of GraphQL used to mediate inbound queries. GraphQL offered an easy to implement solution for defining API routes thanks to the simplicity of defining ![query ](Server/GraphQL/query_root.js) and ![mutation](Server/GraphQL/query_root.js) roots. Join-monster was used to help accomidate flexible queries and rapidly produce SQL queries that could fulfil requests made to the GraphQL endpoint. 
+An admitatdly rough implementation of GraphQL used to handle inbound queries. GraphQL offered an easy to implement solution for defining API routes thanks to the simplicity of it's [query ](Server/GraphQL/query_root.js) and [mutation](Server/GraphQL/query_root.js) handling. Join-monster was used to define SQL queries made to the SQL server that could fetch the data requested of the GraphQL endpoint. 
 
 ### Express
 *Express.js* is the server used to build the backend.
 
 ### MySQL 
-The SQL database is populated by the the SEQUALIZE models defined in the [Sequelize/models](/Server/Sequelize/models) folder. The current database model is focused on creating an effecient relational model that scales well while proving consistent.
+The SQL database is populated by the sequelize models defined in the [Sequelize/models](/Server/Sequelize/models) folder. The current database model is focused on creating an effecient relational model that scales well while proving consistent.
 
 UML Diagram Database was built using
 ![](../../Documentation/uml.png)
-
-### Sequelize 
-The relational SQL database is populated by the the SEQUALIZE models defined in the [/models](/App/Backend/app/models) folder. We focused on creating an effecient relational model using good design principles that minimize table redundency and NULL values.
 
 ### Join Monster
 Used to assist in creating dynamic sql queries based on GraphQL query parameters
