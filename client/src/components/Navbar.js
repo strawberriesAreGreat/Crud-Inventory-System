@@ -1,21 +1,20 @@
 import React from 'react';
-import './sidebar.css';
 import './Navbar.css';
 import logo from './logo.png';
-
-import SideBar from './sidebar';
 
 class Navbar extends React.Component {
   render() {
     return(
       <nav className='navbar'>
-        <div className='sidebar'>
-           <SideBar />
+        <div className='container1'>
+         <a href='/home'>
+              <img src={logo} alt='Logo' width='0.1em'/>
+          </a>
         </div>
         <div className='title'> 
-          <h1>Inventory Tracking Web App </h1>
+          <h2>Strawberry-mart</h2>
         </div>
-        <div className='container'>
+        <div className='container2'>
           <a href='/home'>
               <img src={logo} alt='Logo' width='0.1em'/>
           </a>

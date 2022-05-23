@@ -213,72 +213,55 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
   return (
  
     <div>
-  
+      
       <div className='body'>
-      <ul>
-        
-      <div>
-        <div className='location_name'>
-            <select name="city" value={city} onChange={event => handleCityChange(event.target.value)}>
-              <option id="1" value="1">Toronto</option>
-              <option id="2" value="2">Montreal</option>
-              <option id="3" value="3">Chicago</option>
-              <option id="4" value="4">Nashville</option>
-              <option id="5" value="5">Columbus</option>
-            </select>
-            <select onChange={event => handleWarehouseSelect(event.target.value)}>
-            {warehouses.locations.map((location) => (
-              <option  value={[location.location_id,location.weather]} >{location.street}</option>
-              ))}
-            </select>
-            </div>
-            <div className='location_weather'>
-            <h3> {location.weather}</h3>
-            </div>
-            <div className='add'>
-            <button onClick={() => { toggleHidden() }}>
-                  <img src={add} alt='add' width='30vw'/>   
-            </button>
-            <button onClick={() => { toggleHidden2() }}>
-                  <img src={add} alt='add' width='30vw'/>   
-            </button>
-              {hiddenMenu &&  
-            
-              <div className='inventory_form'>
-                <form onSubmit={ addNewProduct }>
-                <table>
-                  <tr>
-                    <th>Select Product</th>
-                    <select name="sku" id="newProduct">
-                      {prods.productsNotInInventory.map((product) => (
-                      <option  value={product.sku} >{product.name}</option>
+      <div className='options'>
+        <table>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+            <td>
+              <tr className='city-warehouse-options'>  
+                <td className='no-border'> City </td>
+                 <td className='no-border'>
+                   <div className='location_name'>
+                    <select name="city" value={city} onChange={event => handleCityChange(event.target.value)}>
+                      <option id="1" value="1">Toronto</option>
+                      <option id="2" value="2">Montreal</option>
+                      <option id="3" value="3">Chicago</option>
+                      <option id="4" value="4">Nashville</option>
+                      <option id="5" value="5">Columbus</option>
+                    </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr className='city-warehouse-options'>
+                <td className='no-border'>Warehouse</td>
+                  <td className='no-border'>
+                    <select onChange={event => handleWarehouseSelect(event.target.value)}>
+                    {warehouses.locations.map((location) => (
+                      <option  value={[location.location_id,location.weather]} >{location.street}</option>
                       ))}
                     </select>
-                    </tr>
-                  <tr>
-                    <td>Current Inventory Stock</td>
-                    <td> 
-                      <input
-                      type="number"
-                      id="stock"
-                      name="stock"
-                      defaultValue="0"
-                      />
-                    </td>
-                  
-                  </tr>
-                </table>
-                <button type="submit" >
-                  <img src={save} alt='save' width='30vw'/>
-                </button>
-                </form> 
-              </div>
-              }
+                    <button onClick={() => { toggleHidden2() }}>
+                      <img  src={add} alt='add' width='30vw'/>   
+                    </button>
+                  </td>
+                </tr>
+                </td>
+                <td className='location_weather'>
+                    {location.weather}
+                  </td>
+          </table>
+      </div>
+      <div>
+        
                 {hiddenMenu2 &&  
             
-            <div className='inventory_form'>
+            <div >
               <form onSubmit={ addNewLocation }>
-                <table>
+                <table className='warehouse_form'>
                   <tr>
                     <th>Select city</th>
                     <select id="city_id" name="city_id">
@@ -373,28 +356,74 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
               </form> 
             </div>
             }
-            </div>
-        <div className='inventory-titles'>
-            <div className='sku'>sku</div>
-            <div className='name'>product name</div>
-            <div className='price'>price</div>
-            <div className='stock'>inventory count</div>
-            <div className='category'>product category</div>
-            <div className='description'>product description</div>
-            <div className='edit'> save changes</div>
-            <div className='delete'> delete</div>
-          </div>
-
+          
         </div>
-        {inventory.inventory.map((unit) => (
+        <div>
+        <div className='inventory-item'>
+            <div className='element'>sku</div>
+            <div className='element'>product name</div>
+            <div className='element'>price</div>
+            <div className='element'>inventory count</div>
+            <div className='element'>product category</div>
+            <div className='description'>product description</div>
+            <div className='element'> save changes</div>
+            <div className='element'> delete</div>
+        </div>
+      
+        
+            <div className='new-product'>
+            { !hiddenMenu && 
+            <div>
+            <p>Add Product</p>
+            <button onClick={() => { toggleHidden() }}>
+                  <img src={add} alt='add' width='30vw'/>   
+            </button>
+            </div>
+            }
+            {hiddenMenu &&  
+            
+            <div className='inventory_form'>
+              <form onSubmit={ addNewProduct }>
+              <table>
+                <tr>
+                  <td>Select Product</td>
+                  <td>
+                  <select name="sku" id="newProduct">
+                    {prods.productsNotInInventory.map((product) => (
+                    <option  value={product.sku} >{product.name}</option>
+                    ))}
+                  </select>
+                  </td>
+                  <td>Current Inventory Stock</td>
+                  <td> 
+                    <input
+                    type="number"
+                    id="stock"
+                    name="stock"
+                    defaultValue="0"
+                    />
+                  </td>
+                  <td>
+                    <button type="submit" >
+                      <img src={save} alt='save' width='30vw'/>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+      
+              </form> 
+            </div>
+            }
+            </div>
+         
 
+        {inventory.inventory.map((unit) => (
           <div className='inventory-item'>
-            <li key={unit.sku}>
               <form onSubmit={ handleSubmit }>
-                <div className='sku'> {unit.sku} </div>
-                <div className='name'> {unit.product[0].name} </div>
-                <div className='price'> {unit.product[0].price} </div>
-                <div  className='stock'>
+                <div className='element'> {unit.sku} </div>
+                <div className='element'> {unit.product[0].name} </div>
+                <div className='element'> {unit.product[0].price} </div>
+                <div  className='element'>
                   <input type="hidden" id="location_id" name="location_id" value={unit.location_id} />
                   <input type="hidden" id="sku" name="sku" value={unit.sku} />
                   <input
@@ -404,14 +433,14 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
                       defaultValue={unit.stock} 
                   />
                 </div>
-                <div className='category'> {unit.product[0].category} </div>
+                <div className='element'> {unit.product[0].category} </div>
                 <div className='description'> {unit.product[0].description}</div>
-                <div className='edit'>
+                <div className='element'>
                   <button type="submit" >
                       <img src={save} alt='save' width='30vw'/>
                   </button>
                 </div>
-              <div className='delete'>
+              <div className='element'>
                 <button onClick={() => { mutation.mutate({  
                   location_id: unit.location_id,
                   sku: unit.sku, 
@@ -420,10 +449,10 @@ const { fetchWareHouses } = useQuery(['query-warehouses', location, city], () =>
                 </button>
               </div>
               </form>
-            </li>
+     
           </div>
         ))}
-      </ul>
+      </div>
       </div>
     </div>
   );
